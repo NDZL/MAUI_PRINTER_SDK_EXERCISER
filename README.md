@@ -1,0 +1,2 @@
+# MAUI_PRINTER_SDK_EXERCISER
+Using Zebra.Printer.SDK in MAUI
