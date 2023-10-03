@@ -10,6 +10,9 @@ using Android.Graphics;
 using System.Drawing;
 using System.IO;
 using static Android.Renderscripts.ScriptGroup;
+using Android.Media;
+using Java.Security.Cert;
+using Android.Util;
 
 namespace PrintingAPIsExerciser;
 
@@ -33,7 +36,6 @@ public class MainActivity : MauiAppCompatActivity
         mStream.Write(content, 0, content.Length);
         mStream.Flush();
         mStream.Position = 0;
-        //Android.Media.Image img = (Android.Graphics.Bitmap)Android.Media.Image.FromArray(content);
 
         Console.WriteLine(content.Length);
 
@@ -44,8 +46,18 @@ public class MainActivity : MauiAppCompatActivity
         PrinterUtil.ConvertGraphic("E:CXNT48.PNG", zii, outStr);
 
         Console.WriteLine(outStr.Length);
+        outStr.Position = 0;
 
+        using (var fileStream = new FileStream("/enterprise/usr/cxnt48-zebra.png", FileMode.Create, FileAccess.Write))
+        {
+            outStr.CopyTo(fileStream);
+            fileStream.Close();
+        }
 
+        outStr.Position = 0;
+        for (int i = 0; i < 100; i++)
+            Log.Info("OUTSTREAM", ""+Convert.ToChar(outStr.ReadByte()));
+        
 
 
     }
